@@ -1,5 +1,6 @@
 require "kt_data_class/version"
 require "kt_data_class/factory"
+require "kt_data_class/union_syntax"
 
 module KtDataClass
   # @param [Hash] definition
