@@ -1,35 +1,35 @@
 # KtDataClass
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/kt_data_class`. To experiment with that code, run `bin/console` for an interactive prompt.
+Kotlinの
 
-TODO: Delete this and the text above, and describe your gem
+```
+data class Point(val x: Int, val y: Int)
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'kt_data_class'
+val p1 = Point(3, 4)
 ```
 
-And then execute:
+のように書けるやつをRubyで作ってみようという試み。
 
-    $ bundle
+## Feature
 
-Or install it yourself as:
+### Basic usage
 
-    $ gem install kt_data_class
+```
+Point = KtDataClass.create(x: Fixnum, y: Fixnum)
+p1 = Point.new(x: 3, y: 4)
 
-## Usage
+puts p1.x, p1.y
+```
 
-TODO: Write usage instructions here
 
-## Development
+### Strongly typed
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```
+Point=KtDataClass.create(x: Fixnum, y: Fixnum)
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+p1 = Point.new(x: 3, y: 4)
+# => #<Point:0x000000000233c5f0 @x=3, @y=4>
 
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/kt_data_class.
+p2 = Point.new(x: 3, y: "4")
+# ArgumentError: type mismatch: y must be a Fixnum, String given
+```
