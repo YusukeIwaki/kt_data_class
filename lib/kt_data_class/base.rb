@@ -27,6 +27,8 @@ module KtDataClass
         h
       end
     end
+    alias_method :to_h, :hash
+    alias_method :to_hash, :hash
 
     def ==(other)
       self.hash == other.hash

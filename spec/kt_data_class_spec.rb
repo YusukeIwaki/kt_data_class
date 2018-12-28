@@ -53,6 +53,15 @@ RSpec.describe KtDataClass do
     end
   end
 
+  describe 'Hash変換' do
+    let(:instance) { KtDataClass.create(x: Fixnum, y: NilClass).new(x: 1, y: nil) }
+    it '正しくHashに変換されること' do
+      expect(instance.hash).to eq({x: 1, y: nil})
+      expect(instance.to_h).to eq({x: 1, y: nil})
+      expect(instance.to_hash).to eq({x: 1, y: nil})
+    end
+  end
+
   describe 'equality' do
     let(:klass1) { KtDataClass.create(x: Fixnum) }
     let(:klass2) { KtDataClass.create(x: Fixnum) }
