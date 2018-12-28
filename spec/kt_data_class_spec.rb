@@ -85,6 +85,13 @@ RSpec.describe KtDataClass do
     end
   end
 
+  describe 'String変換' do
+    let(:instance) { KtDataClass.create(x: Fixnum, y: NilClass).new(x: 1, y: nil) }
+    it 'ハッシュ文字列に変換されること' do
+      expect(instance.to_s).to eq({x: 1, y: nil}.to_s)
+    end
+  end
+
   describe 'equality' do
     let(:klass1) { KtDataClass.create(x: Fixnum) }
     let(:klass2) { KtDataClass.create(x: Fixnum) }

@@ -36,6 +36,10 @@ module KtDataClass
     alias_method :to_h, :hash
     alias_method :to_hash, :hash
 
+    def to_s
+      hash.to_s
+    end
+
     def ==(other)
       self.hash == other.hash
     end
