@@ -44,12 +44,35 @@ RSpec.describe KtDataClass do
   end
 
   describe "データクラスの定義の変更" do
-    let(:definition) { { x: Fixnum} }
+    let(:definition) { { x: Fixnum } }
 
     it '定義の変更の影響を受けないこと' do
       klass = KtDataClass.create(definition)
       definition[:x] = String
       expect{ klass.new(x: 1) }.not_to raise_error(ArgumentError, /type mismatch/)
+    end
+  end
+
+  describe "複数クラスの定義" do
+    context 'Array<Class>指定時' do
+      let(:klass) { KtDataClass.create(x: [Fixnum, NilClass, String]) }
+
+      it '定義されている型が使えること' do
+        expect(klass.new(x: 1).x).to eq(1)
+        expect(klass.new(x: nil).x).to be_nil
+        expect(klass.new(x: "1").x).to eq("1")
+      end
+    end
+
+    context 'UnionSyntax利用時' do
+      using KtDataClass::UnionSyntax
+      let(:klass) { KtDataClass.create(x: Fixnum | NilClass | String) }
+
+      it '定義されている型が使えること' do
+        expect(klass.new(x: 1).x).to eq(1)
+        expect(klass.new(x: nil).x).to be_nil
+        expect(klass.new(x: "1").x).to eq("1")
+      end
     end
   end
 

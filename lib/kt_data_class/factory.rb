@@ -1,4 +1,5 @@
 require "kt_data_class/base"
+require "kt_data_class/union_syntax"
 
 module KtDataClass
   class InvalidDefinitionError < ArgumentError ; end
@@ -6,7 +7,9 @@ module KtDataClass
   class Factory
     def initialize(definition)
       raise_if_invalid(definition)
-      @definition = definition.dup
+      @definition = definition.reject{|attr_name, klass| klass.is_a?(UnionClass)}.merge(
+                    definition.select{|attr_name, klass| klass.is_a?(UnionClass)}.
+                                map{|attr_name, klass| [attr_name, klass.klasses]}.to_h)
     end
 
     def create
@@ -29,8 +32,14 @@ module KtDataClass
         unless attr_name.is_a?(Symbol)
           raise InvalidDefinitionError.new("attribute name must be a symbol. #{attr_name.class.name} is given: #{attr_name}")
         end
-        unless klass.is_a?(Class)
-          raise InvalidDefinitionError.new("#{attr_name} is not a class")
+        if klass.is_a?(Array)
+          if klass.any?{|kls| !kls.is_a?(Class)}
+            raise InvalidDefinitionError.new("#{klass} is not an array of Class")
+          end
+        else
+          if !klass.is_a?(Class) && !klass.is_a?(UnionClass)
+            raise InvalidDefinitionError.new("#{klass} is not a class")
+          end
         end
       end
 
