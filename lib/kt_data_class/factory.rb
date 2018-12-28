@@ -7,9 +7,13 @@ module KtDataClass
   class Factory
     def initialize(definition)
       raise_if_invalid(definition)
-      @definition = definition.reject{|attr_name, klass| klass.is_a?(UnionClass)}.merge(
-                    definition.select{|attr_name, klass| klass.is_a?(UnionClass)}.
-                                map{|attr_name, klass| [attr_name, klass.klasses]}.to_h)
+      @definition = definition.map{|attr_name, klass|
+                      if klass.is_a?(UnionClass)
+                        [attr_name, klass.klasses]
+                      else
+                        [attr_name, klass]
+                      end
+                    }.to_h
     end
 
     def create
