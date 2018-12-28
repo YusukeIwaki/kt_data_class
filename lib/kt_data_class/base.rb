@@ -20,5 +20,20 @@ module KtDataClass
         instance_variable_set("@#{attr_name}", value)
       end
     end
+
+    def hash
+      self.class.definition.keys.inject(Hash.new) do |h, attr_name|
+        h[attr_name] = instance_variable_get("@#{attr_name}")
+        h
+      end
+    end
+
+    def ==(other)
+      self.hash == other.hash
+    end
+
+    def eql?(other)
+      self.class == other.class && self.hash.eql?(other.hash)
+    end
   end
 end

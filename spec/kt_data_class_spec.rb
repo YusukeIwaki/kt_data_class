@@ -52,4 +52,66 @@ RSpec.describe KtDataClass do
       expect{ klass.new(x: 1) }.not_to raise_error(ArgumentError, /type mismatch/)
     end
   end
+
+  describe 'equality' do
+    let(:klass1) { KtDataClass.create(x: Fixnum) }
+    let(:klass2) { KtDataClass.create(x: Fixnum) }
+    let(:klass3) { KtDataClass.create(x: Float) }
+    let(:klass4) { KtDataClass.create(x: Fixnum, y: NilClass) }
+
+    describe '同一のクラスの２つの同値インスタンスの比較' do
+      let(:instance1) { klass1.new(x: 1) }
+      let(:instance2) { klass1.new(x: 1) }
+
+      it { expect(instance1.equal?(instance2)).to eq(false) }
+      it { expect(instance1 == instance2).to eq(true) }
+      it { expect(instance1 <=> instance2).to eq(0) }
+       it { expect(instance1.eql?(instance2)).to eq(true) }
+      it { expect(instance1 === instance2).to eq(true) }
+    end
+
+    describe '同一のクラスの２つの異なる値のインスタンスの比較' do
+      let(:instance1) { klass1.new(x: 1) }
+      let(:instance2) { klass1.new(x: 2) }
+
+      it { expect(instance1.equal?(instance2)).to eq(false) }
+      it { expect(instance1 == instance2).to eq(false) }
+      it { expect(instance1 <=> instance2).not_to eq(0) }
+      it { expect(instance1.eql?(instance2)).to eq(false) }
+      it { expect(instance1 === instance2).to eq(false) }
+    end
+
+    describe '定義が同じで、異なるクラスの２つのインスタンスの比較' do
+      let(:instance1) { klass1.new(x: 1) }
+      let(:instance2) { klass2.new(x: 1) }
+
+      it { expect(instance1.equal?(instance2)).to eq(false) }
+      it { expect(instance1 == instance2).to eq(true) }
+      it { expect(instance1 <=> instance2).to eq(0) }
+      it { expect(instance1.eql?(instance2)).to eq(false) }
+      it { expect(instance1 === instance2).to eq(true) }
+    end
+
+    describe '定義が異なるが値レベルでは同じクラスの２つのインスタンスの比較' do
+      let(:instance1) { klass1.new(x: 1) }
+      let(:instance2) { klass3.new(x: 1.0) }
+
+      it { expect(instance1.equal?(instance2)).to eq(false) }
+      it { expect(instance1 == instance2).to eq(true) }
+      it { expect(instance1 <=> instance2).to eq(0) }
+      it { expect(instance1.eql?(instance2)).to eq(false) }
+      it { expect(instance1 === instance2).to eq(true) }
+    end
+
+    describe 'クラス定義も値も異なるインスタンスの比較' do
+      let(:instance1) { klass1.new(x: 1) }
+      let(:instance2) { klass4.new(x: 1, y: nil) }
+
+      it { expect(instance1.equal?(instance2)).to eq(false) }
+      it { expect(instance1 == instance2).to eq(false) }
+      it { expect(instance1 <=> instance2).not_to eq(0) }
+      it { expect(instance1.eql?(instance2)).to eq(false) }
+      it { expect(instance1 === instance2).to eq(false) }
+    end
+  end
 end
