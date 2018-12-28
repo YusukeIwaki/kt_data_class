@@ -6,7 +6,7 @@ module KtDataClass
   class Factory
     def initialize(definition)
       raise_if_invalid(definition)
-      @definition = definition
+      @definition = definition.dup
     end
 
     def create

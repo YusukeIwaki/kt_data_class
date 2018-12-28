@@ -42,4 +42,14 @@ RSpec.describe KtDataClass do
       end
     end
   end
+
+  describe "データクラスの定義の変更" do
+    let(:definition) { { x: Fixnum} }
+
+    it '定義の変更の影響を受けないこと' do
+      klass = KtDataClass.create(definition)
+      definition[:x] = String
+      expect{ klass.new(x: 1) }.not_to raise_error(ArgumentError, /type mismatch/)
+    end
+  end
 end
