@@ -33,3 +33,17 @@ p1 = Point.new(x: 3, y: 4)
 p2 = Point.new(x: 3, y: "4")
 # ArgumentError: type mismatch: y must be a Fixnum, String given
 ```
+
+### Destructuring assignment
+
+```
+Point = KtDataClass.create(x: Fixnum, y: Fixnum)
+p = Point.new(x: 1, y: 2)
+x, y = p
+
+x
+# => 1
+
+y
+# => 2
+```
