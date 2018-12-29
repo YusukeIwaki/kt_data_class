@@ -36,6 +36,14 @@ module KtDataClass
     alias_method :to_h, :hash
     alias_method :to_hash, :hash
 
+    # @see http://maeharin.hatenablog.com/entry/20130107/p1
+    def to_ary
+      self.class.definition.keys.map do |attr_name|
+        instance_variable_get("@#{attr_name}")
+      end
+    end
+    alias_method :to_a, :to_ary
+
     def to_s
       hash.to_s
     end
