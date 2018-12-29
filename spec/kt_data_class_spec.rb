@@ -76,6 +76,35 @@ RSpec.describe KtDataClass do
     end
   end
 
+  describe 'ブロックの評価' do
+    let(:klass) {
+      KtDataClass.create(x: Fixnum, y: Fixnum) do
+        def norm
+          Math.sqrt(x * x + y * y)
+        end
+
+        def to_s
+          "#<klass {x: #{x}, y: #{y}}>"
+        end
+      end
+    }
+    let(:instance) { klass.new(x: 3, y: 4) }
+    it { expect(instance.norm).to eq(5) }
+    it { expect(instance.to_s).to eq("#<klass {x: 3, y: 4}>") }
+  end
+
+  describe '継承' do
+    let(:instance) {
+      class Point < KtDataClass.create(x: Fixnum, y: Fixnum)
+        def norm
+          Math.sqrt(x * x + y * y)
+        end
+      end
+      Point.new(x: 3, y: 4)
+    }
+    it { expect(instance.norm).to eq(5) }
+  end
+
   describe 'Hash変換' do
     let(:instance) { KtDataClass.create(x: Fixnum, y: NilClass).new(x: 1, y: nil) }
     it '正しくHashに変換されること' do

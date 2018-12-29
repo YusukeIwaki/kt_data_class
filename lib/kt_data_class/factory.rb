@@ -16,13 +16,17 @@ module KtDataClass
                     }.to_h
     end
 
-    def create
+    def create(&block)
       member_definition = @definition
       Class.new(Base) do
         define_singleton_method(:definition) do
           member_definition
         end
         attr_reader(*member_definition.keys)
+
+        unless block.nil?
+          class_eval(&block)
+        end
       end
     end
 
