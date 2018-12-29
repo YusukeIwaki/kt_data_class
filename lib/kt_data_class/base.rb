@@ -27,6 +27,14 @@ module KtDataClass
       end
     end
 
+    def copy(*args, **kwargs)
+      unless args.empty?
+        raise ArgumentError.new("parameters for copying must be keyword arguments.")
+      end
+      new_params = hash.merge(kwargs)
+      self.class.new(**new_params)
+    end
+
     def hash
       self.class.definition.keys.inject(Hash.new) do |h, attr_name|
         h[attr_name] = instance_variable_get("@#{attr_name}")
