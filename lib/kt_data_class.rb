@@ -4,8 +4,8 @@ require "kt_data_class/union_syntax"
 
 module KtDataClass
   # @param [Hash] definition
-  def create(definition)
-    Factory.new(definition).create
+  def create(definition, &block)
+    Factory.new(definition).create(&block)
   end
 
   module_function :create
