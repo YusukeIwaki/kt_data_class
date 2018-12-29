@@ -152,5 +152,15 @@ RSpec.describe KtDataClass do
       it { expect(instance1.eql?(instance2)).to eq(false) }
       it { expect(instance1 === instance2).to eq(false) }
     end
+
+    describe '分割代入' do
+      let(:instance) { KtDataClass.create(a: Fixnum, b: String, c: Float).new(b: "x", c: 1.5, a: 1) }
+      it {
+        a, b, c = instance
+        expect(a).to eq(1)
+        expect(b).to eq("x")
+        expect(c).to eq(1.5)
+      }
+    end
   end
 end
