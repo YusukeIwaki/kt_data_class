@@ -181,15 +181,61 @@ RSpec.describe KtDataClass do
       it { expect(instance1.eql?(instance2)).to eq(false) }
       it { expect(instance1 === instance2).to eq(false) }
     end
+  end
 
-    describe '分割代入' do
-      let(:instance) { KtDataClass.create(a: Fixnum, b: String, c: Float).new(b: "x", c: 1.5, a: 1) }
-      it {
-        a, b, c = instance
-        expect(a).to eq(1)
-        expect(b).to eq("x")
-        expect(c).to eq(1.5)
-      }
+  describe '分割代入' do
+    let(:instance) { KtDataClass.create(a: Fixnum, b: String, c: Float).new(b: "x", c: 1.5, a: 1) }
+    it {
+      a, b, c = instance
+      expect(a).to eq(1)
+      expect(b).to eq("x")
+      expect(c).to eq(1.5)
+    }
+  end
+
+  describe 'copy' do
+    let(:klass) { KtDataClass.create(a: Fixnum, b: String) }
+    let(:instance) { klass.new(a: 1, b: "a") }
+
+    context 'パラメータ無指定の場合' do
+      subject!(:instance2) { instance.copy }
+
+      it '新たなインスタンスが作られること' do
+        expect(instance.equal?(instance2)).to eq(false)
+      end
+      it '値が同一であること' do
+        expect(instance2.a).to eq(instance.a)
+        expect(instance2.b).to eq(instance.b)
+      end
+    end
+
+    context '初期化パラメータが正しい場合' do
+      subject!(:instance2) { instance.copy(a: 100) }
+
+      it '新たなインスタンスが作られること' do
+        expect(instance.equal?(instance2)).to eq(false)
+      end
+      it '値が変更されたインスタンスが返り、もとのインスタンスは値が変更されていないこと' do
+        expect(instance.a).to eq(1)
+        expect(instance2.a).to eq(100)
+        expect(instance2.b).to eq(instance.b)
+      end
+    end
+
+    context '初期化パラメータの型が誤っている場合' do
+      subject { instance.copy(a: 100, b: 100) }
+      it 'ArgumentErrorになること' do
+        expect{ subject }.to raise_error(ArgumentError, /type mismatch: b must be a String/)
+        expect(instance.a).not_to eq(100)
+      end
+    end
+
+    context '未知の初期化パラメータが指定された場合' do
+      subject { instance.copy(a: 100, c: nil) }
+      it 'ArgumentErrorになること' do
+        expect{ subject }.to raise_error(ArgumentError, /unknown keyword: c/)
+        expect(instance.a).not_to eq(100)
+      end
     end
   end
 end
