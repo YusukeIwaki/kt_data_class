@@ -38,6 +38,23 @@ end
 # => 5.0
 ```
 
+### Immutable
+
+```
+Profile = KtDataClass.create(hobby: String)
+profile = Profile.new(hobby: "Ruby")
+
+profile.hobby = "Python"
+# NoMethodError: undefined method `hobby=' for #<Profile:0x0000000000ee2668 @hobby="Ruby">
+
+new_profile = profile.copy(hobby: "Python")
+
+profile.hobby
+# => "Ruby"
+new_profile.hobby
+# => "Python"
+```
+
 ### Strongly typed
 
 ```
