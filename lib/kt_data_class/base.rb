@@ -13,16 +13,6 @@ module KtDataClass
       end
 
       kwargs.each do |attr_name, value|
-        klass = self.class.definition[attr_name]
-        if klass.is_a?(Array)
-          if klass.none?{|kls| value.is_a?(kls)}
-            raise ArgumentError.new("type mismatch: #{attr_name} must be one of #{klass}, #{value.class} given")
-          end
-        else
-          unless value.is_a?(klass)
-            raise ArgumentError.new("type mismatch: #{attr_name} must be a #{klass}, #{value.class} given")
-          end
-        end
         instance_variable_set("@#{attr_name}", value)
       end
     end
