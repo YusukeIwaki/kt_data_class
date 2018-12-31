@@ -4,7 +4,7 @@ require "kt_data_class/factory"
 
 module KtDataClass
   def create(*attr_names, **kwargs, &block)
-    definition = Definition.new(attr_names)
+    definition = Definition.new(attr_names, kwargs)
     Factory.new(definition).create(&block)
   end
 

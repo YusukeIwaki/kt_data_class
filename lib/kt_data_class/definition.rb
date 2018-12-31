@@ -3,8 +3,9 @@ module KtDataClass
 
   class Definition
     # @param [Array<Symbol>] attr_names
-    def initialize(attr_names)
-      raise_if_invalid(attr_names)
+    # @param [Hash] kwargs 空じゃないものを渡すと例外が発生する
+    def initialize(attr_names, kwargs = {})
+      raise_if_invalid(attr_names, kwargs)
       @attr_names = attr_names
     end
 
@@ -14,8 +15,8 @@ module KtDataClass
 
     private
 
-    def raise_if_invalid(attr_names)
-      if !attr_names.is_a?(Array) || attr_names.any?{ |attr_name| !attr_name.is_a?(Symbol) }
+    def raise_if_invalid(attr_names, kwargs)
+      if !kwargs.empty? || !attr_names.is_a?(Array) || attr_names.any?{ |attr_name| !attr_name.is_a?(Symbol) }
         raise InvalidDefinitionError.new("class definition must be specified with Array of Symbols")
       end
       duplicated_names = attr_names.group_by{|attr_name| attr_name}.values.select{|names| names.count >= 2}

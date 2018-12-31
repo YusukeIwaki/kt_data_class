@@ -6,6 +6,20 @@ RSpec.describe KtDataClass do
   end
 
   describe "クラス定義" do
+    context 'クラス定義にハッシュ指定がある場合' do
+      subject { KtDataClass.create(:x, y: "hoge") }
+      it 'エラーになること' do
+        expect{ subject }.to raise_error(ArgumentError, /class definition must be specified with Array of Symbols/)
+      end
+    end
+
+    context 'クラス定義にSymbol以外のものがある場合' do
+      subject { KtDataClass.create(:x, 1) }
+      it 'エラーになること' do
+        expect{ subject }.to raise_error(ArgumentError, /class definition must be specified with Array of Symbols/)
+      end
+    end
+
     context 'クラス定義に重複がある場合' do
       subject { KtDataClass.create(:x, :y, :x) }
       it 'エラーになること' do
