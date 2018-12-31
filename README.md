@@ -15,7 +15,7 @@ val p1 = Point(3, 4)
 ### Basic usage
 
 ```
-Point = KtDataClass.create(x: Fixnum, y: Fixnum)
+Point = KtDataClass.create(:x, :y)
 p1 = Point.new(x: 3, y: 4)
 
 puts p1.x, p1.y
@@ -24,7 +24,7 @@ puts p1.x, p1.y
 Also, some convenient methods can be added like below:
 
 ```
-Point = KtDataClass.create(x: Fixnum, y: Fixnum) do
+Point = KtDataClass.create(:x, :y) do
   def -(other)
     self.class.new(x: x - other.x, y: y - other.y)
   end
@@ -41,7 +41,7 @@ end
 ### Immutable
 
 ```
-Profile = KtDataClass.create(hobby: String)
+Profile = KtDataClass.create(:hobby)
 profile = Profile.new(hobby: "Ruby")
 
 profile.hobby = "Python"
@@ -55,22 +55,10 @@ new_profile.hobby
 # => "Python"
 ```
 
-### Strongly typed
-
-```
-Point=KtDataClass.create(x: Fixnum, y: Fixnum)
-
-p1 = Point.new(x: 3, y: 4)
-# => #<Point:0x000000000233c5f0 @x=3, @y=4>
-
-p2 = Point.new(x: 3, y: "4")
-# ArgumentError: type mismatch: y must be a Fixnum, String given
-```
-
 ### Destructuring assignment
 
 ```
-Point = KtDataClass.create(x: Fixnum, y: Fixnum)
+Point = KtDataClass.create(:x, :y)
 p = Point.new(x: 1, y: 2)
 x, y = p
 
@@ -94,7 +82,7 @@ data class Point(x: Int = 0, y: Int = 0)
 This can be implemented by overriding constructor like below:
 
 ```
-Point = KtDataClass.create(x: Fixnum, y: Fixnum) do
+Point = KtDataClass.create(:x, :y) do
   def initialize(x: 0, y: 0)
     super
   end
