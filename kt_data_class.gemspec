@@ -6,7 +6,7 @@ require "kt_data_class/version"
 Gem::Specification.new do |spec|
   spec.name          = "kt_data_class"
   spec.version       = KtDataClass::VERSION
-  spec.authors       = ["Yusuke Iwaki"]
+  spec.authors       = ["YusukeIwaki"]
   spec.email         = ["yusuke.iwaki@crowdworks.co.jp"]
 
   spec.summary       = "The Ruby porting of `data class` in Kotlin"
