@@ -10,6 +10,23 @@ val p1 = Point(3, 4)
 
 のように書けるやつをRubyで作ってみようという試み。
 
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'kt_data_class'
+```
+
+And then execute:
+
+    $ bundle install
+
+Or install it yourself as:
+
+    $ gem install kt_data_class
+
+
 ## Feature
 
 ### Basic usage
